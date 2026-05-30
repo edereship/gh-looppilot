@@ -17,7 +17,7 @@ fi
 
 if [ ! -f "$BUNDLE" ]; then
   echo "gh-looppilot: bundle not found at $BUNDLE." >&2
-  echo "If running from source, build it with: npm run bundle:cli" >&2
+  echo "If running from source, build it with: npm run bundle" >&2
   exit 2
 fi
 
