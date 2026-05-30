@@ -1,0 +1,21 @@
+{
+  "name": "gh-looppilot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GitHub CLI extension to set up and verify LoopPilot in a repository",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "check": "tsc --noEmit -p tsconfig.json && vitest run",
+    "bundle": "esbuild src/cli-entry.ts --bundle --platform=node --target=node20 --format=cjs --outfile=cli.cjs",
+    "cli": "node --import tsx src/cli-entry.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}
