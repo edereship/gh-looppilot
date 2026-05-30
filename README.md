@@ -2,17 +2,15 @@
 
 **English** | [日本語](README.ja.md)
 
-A [GitHub CLI extension](https://docs.github.com/en/github-cli/github-cli/creating-github-cli-extensions)
-that turns LoopPilot adoption (otherwise ~461 lines of copy-pasted YAML) into one
-command. It generates the thin caller workflows (referencing the reusable
-workflows at `team-yubune/loop-pilot@v1`), creates the gate label, suggests a
-`CHECK_COMMAND`, lists the manual setup steps, and runs a read-only pre-flight
-against your authenticated `gh` session.
+> **New to LoopPilot?** This is the one-command installer. [**LoopPilot**](https://github.com/team-yubune/loop-pilot) itself — the GitHub Action that runs a Codex review × Claude auto-fix loop on your pull requests — lives in the main repo, with the full configuration and token reference. This CLI just wires your repository up to it.
 
-Distribution rationale and the Action-vs-CLI release boundary:
-[ADR-0001](https://github.com/team-yubune/loop-pilot/blob/main/docs/architecture/adr-0001-cli-distribution.md)
-in the main repo. This repo is the canonical home of the extension (a gh
-extension must live in a `gh-<name>` repo).
+A [GitHub CLI extension](https://docs.github.com/en/github-cli/github-cli/creating-github-cli-extensions)
+that turns LoopPilot adoption — otherwise dozens of lines of hand-written caller
+YAML plus label, secret, and pre-flight setup — into one command. It generates
+the thin caller workflows (referencing the reusable workflows at
+[`team-yubune/loop-pilot@v1`](https://github.com/team-yubune/loop-pilot)), creates
+the gate label, suggests a `CHECK_COMMAND`, lists the manual setup steps, and runs
+a read-only pre-flight against your authenticated `gh` session.
 
 ## Install
 
@@ -22,8 +20,23 @@ gh looppilot init      # scaffold callers + label + CHECK_COMMAND + manual steps
 gh looppilot doctor    # read-only pre-flight only
 ```
 
-Requires Node ≥ 20 on PATH (the extension is an interpreted Node CLI; the shim
-`gh-looppilot` execs `node cli.cjs`).
+Requires **Node ≥ 20 on PATH** (the extension is an interpreted Node CLI; the shim
+`gh-looppilot` execs `node cli.cjs`) and an **authenticated GitHub CLI** — run
+`gh auth login` first if you haven't (both `init` and `doctor` exit `2` without it).
+
+## After `init`: finish setup before your first PR
+
+`gh looppilot init` scaffolds the workflows and prints the steps it can't automate.
+Complete these before opening your first PR — the full walkthrough (and token
+reference) lives in the main repo under
+[**Before your first PR**](https://github.com/team-yubune/loop-pilot#before-your-first-pr-manual-steps):
+
+1. **Connect the Codex GitHub App** to the target repo.
+2. **Add the secret(s):** `ANTHROPIC_API_KEY` *or* `CLAUDE_CODE_OAUTH_TOKEN` (required), plus optionally `CODEX_REVIEW_REQUEST_TOKEN` / `LOOPPILOT_PUSH_TOKEN` for production — see the [token reference](https://github.com/team-yubune/loop-pilot#tokens--required-permissions-fine-grained-pat).
+3. **Verify:** `gh looppilot doctor` (errors must be 0).
+4. **Open a PR** with the `loop-pilot` label (or set `LOOPPILOT_FULL_AUTO=true`).
+
+> **Why a separate repo?** A gh extension must live in a `gh-<name>` repo, so this is the extension's canonical home. For the distribution rationale and the Action-vs-CLI release boundary, see [ADR-0001](https://github.com/team-yubune/loop-pilot/blob/main/docs/architecture/adr-0001-cli-distribution.md) in the main repo.
 
 ## Commands
 
@@ -34,7 +47,8 @@ Requires Node ≥ 20 on PATH (the extension is an interpreted Node CLI; the shim
 
 Key flags: `--full-auto` (no gate label), `--same-repo` (`secrets: inherit`),
 `--label <name>`, `--check-command <c>`, `--ref <ref>`, `--repo <owner/repo>`,
-`--dry-run`, `--force`, `--no-preflight`, `--json` (doctor). See `gh looppilot --help`.
+`--dry-run`, `--force`, `--no-preflight`, `--preflight-only` (init alias for `doctor`),
+`--json` (doctor). See `gh looppilot --help`.
 
 Pre-flight exit codes: `0` = no errors (warnings/unknown allowed), `1` = an error
 to fix before the first PR, `2` = the check run itself could not proceed (auth /
@@ -56,6 +70,8 @@ silent pass); 403s degrade per-probe.
 | `autoMerge.config` | `LOOPPILOT_AUTO_MERGE=true` but repo "Allow auto-merge" off | ok / error / unknown |
 | `secret.codexReviewToken` | `CODEX_REVIEW_REQUEST_TOKEN` missing (recommended) | ok / warning / unknown |
 | `toolchain.checkCommand` | CHECK_COMMAND unsafe / inconsistent with the detected toolchain | ok / warning / error |
+
+> If a probe throws unexpectedly, pre-flight also emits an internal `check.error` row (status `unknown`) rather than failing silently. It never flips `ok` to `false`, so treat the `id` set as open-ended when parsing `--json`.
 
 ### `--json` schema
 
