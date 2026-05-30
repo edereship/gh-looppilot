@@ -1,5 +1,7 @@
 # `gh looppilot` — LoopPilot setup CLI
 
+**English** | [日本語](README.ja.md)
+
 A [GitHub CLI extension](https://docs.github.com/en/github-cli/github-cli/creating-github-cli-extensions)
 that turns LoopPilot adoption (otherwise ~461 lines of copy-pasted YAML) into one
 command. It generates the thin caller workflows (referencing the reusable
