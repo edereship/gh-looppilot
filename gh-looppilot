@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # gh CLI extension entrypoint for LoopPilot (ADR-0001).
 #
-# `gh extension install team-yubune/gh-looppilot` clones this repo and runs this
+# `gh extension install Edereship/gh-looppilot` clones this repo and runs this
 # executable for `gh looppilot ...`. It is a thin shim that execs the bundled
 # Node CLI (cli.cjs) sitting next to it. Node >= 20 is required.
 set -euo pipefail

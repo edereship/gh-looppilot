@@ -135,7 +135,7 @@ Flags:
   --label <name>      Override the gate label (default: loop-pilot).
   --check-command <c> Override the suggested/effective CHECK_COMMAND.
   --ref <ref>         Pin a ref instead of the moving major (default: v1).
-  --repo <owner/repo> Reusable-workflow source repo (default: team-yubune/loop-pilot).
+  --repo <owner/repo> Reusable-workflow source repo (default: Edereship/loop-pilot).
   --dry-run           (init) Print actions without writing files or creating labels.
   --force             (init) Overwrite existing caller files.
   --no-preflight      (init) Skip the trailing pre-flight.

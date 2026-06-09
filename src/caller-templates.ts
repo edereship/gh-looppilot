@@ -15,7 +15,7 @@ export interface CallerOptions {
   language?: WorkflowLanguage;
   /** Moving major ref to pin. Default "v1". */
   ref?: string;
-  /** owner/repo hosting the reusable workflows. Default "team-yubune/loop-pilot". */
+  /** owner/repo hosting the reusable workflows. Default "Edereship/loop-pilot". */
   actionRepo?: string;
   /**
    * Same-repo caller → `secrets: inherit`. Cross-org adopter (default) →
@@ -24,7 +24,7 @@ export interface CallerOptions {
   sameRepo?: boolean;
 }
 
-const DEFAULT_REPO = "team-yubune/loop-pilot";
+const DEFAULT_REPO = "Edereship/loop-pilot";
 
 function resolved(opts: CallerOptions) {
   return {
