@@ -2,20 +2,20 @@
 
 **English** | [日本語](README.ja.md)
 
-> **New to LoopPilot?** This is the one-command installer. [**LoopPilot**](https://github.com/team-yubune/loop-pilot) itself — the GitHub Action that runs a Codex review × Claude auto-fix loop on your pull requests — lives in the main repo, with the full configuration and token reference. This CLI just wires your repository up to it.
+> **New to LoopPilot?** This is the one-command installer. [**LoopPilot**](https://github.com/edereship/loop-pilot) itself — the GitHub Action that runs a Codex review × Claude auto-fix loop on your pull requests — lives in the main repo, with the full configuration and token reference. This CLI just wires your repository up to it.
 
 A [GitHub CLI extension](https://docs.github.com/en/github-cli/github-cli/creating-github-cli-extensions)
 that turns LoopPilot adoption — otherwise dozens of lines of hand-written caller
 YAML plus label, secret, and pre-flight setup — into one command. It generates
 the thin caller workflows (referencing the reusable workflows at
-[`team-yubune/loop-pilot@v1`](https://github.com/team-yubune/loop-pilot)), creates
+[`edereship/loop-pilot@v1`](https://github.com/edereship/loop-pilot)), creates
 the gate label, suggests a `CHECK_COMMAND`, lists the manual setup steps, and runs
 a read-only pre-flight against your authenticated `gh` session.
 
 ## Install
 
 ```bash
-gh extension install team-yubune/gh-looppilot
+gh extension install edereship/gh-looppilot
 gh looppilot init      # scaffold callers + label + CHECK_COMMAND + manual steps + pre-flight
 gh looppilot doctor    # read-only pre-flight only
 ```
@@ -29,14 +29,14 @@ Requires **Node ≥ 20 on PATH** (the extension is an interpreted Node CLI; the 
 `gh looppilot init` scaffolds the workflows and prints the steps it can't automate.
 Complete these before opening your first PR — the full walkthrough (and token
 reference) lives in the main repo under
-[**Before your first PR**](https://github.com/team-yubune/loop-pilot#before-your-first-pr-manual-steps):
+[**Before your first PR**](https://github.com/edereship/loop-pilot#before-your-first-pr-manual-steps):
 
 1. **Connect the Codex GitHub App** to the target repo.
-2. **Add the secret(s):** `ANTHROPIC_API_KEY` *or* `CLAUDE_CODE_OAUTH_TOKEN` (required), plus optionally `CODEX_REVIEW_REQUEST_TOKEN` / `LOOPPILOT_PUSH_TOKEN` for production — see the [token reference](https://github.com/team-yubune/loop-pilot#tokens--required-permissions-fine-grained-pat).
+2. **Add the secret(s):** `ANTHROPIC_API_KEY` *or* `CLAUDE_CODE_OAUTH_TOKEN` (required), plus optionally `CODEX_REVIEW_REQUEST_TOKEN` / `LOOPPILOT_PUSH_TOKEN` for production — see the [token reference](https://github.com/edereship/loop-pilot#tokens--required-permissions-fine-grained-pat).
 3. **Verify:** `gh looppilot doctor` (errors must be 0).
 4. **Open a PR** with the `loop-pilot` label (or set `LOOPPILOT_FULL_AUTO=true`).
 
-> **Why a separate repo?** A gh extension must live in a `gh-<name>` repo, so this is the extension's canonical home. For the distribution rationale and the Action-vs-CLI release boundary, see [ADR-0001](https://github.com/team-yubune/loop-pilot/blob/main/docs/architecture/adr-0001-cli-distribution.md) in the main repo.
+> **Why a separate repo?** A gh extension must live in a `gh-<name>` repo, so this is the extension's canonical home. For the distribution rationale and the Action-vs-CLI release boundary, see [ADR-0001](https://github.com/edereship/loop-pilot/blob/main/docs/architecture/adr-0001-cli-distribution.md) in the main repo.
 
 ## Commands
 
@@ -113,4 +113,4 @@ Layout: `gh-looppilot` (shim) · `cli.cjs` (committed bundle) · `src/` (TS) ·
 
 ## License
 
-MIT (same as [team-yubune/loop-pilot](https://github.com/team-yubune/loop-pilot)).
+MIT (same as [edereship/loop-pilot](https://github.com/edereship/loop-pilot)).
